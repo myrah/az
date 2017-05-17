@@ -2,6 +2,8 @@
 """
 https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-request-limits
 https://management.azure.com/subscriptions/{guid}/resourcegroups?api-version=2016-09-01
+we start with status code 429 at deployment time
+NOT including any other error check for different Azure services
 """
 
 import time
@@ -41,31 +43,29 @@ def waitretry():
         print(waittime)
         time.sleep(waitime)
 
+# add re-run deploy since template deployment are incremental
+def reDeploy():
+    # re-deploy template
+
 # define user-defined exceptions
 class CustomError(Exception):
    """Base class for other exceptions"""
-   def __init__(self, arg):
-       # Set some exception infomation
-       self.msg = arg
+
 try:
     # Raise an exception with argument
     raise CustomError('This is a CustomError')
-except CustomError, arg:
+except CustomError as e:
     # Catch the custom exception
-    print 'Error: ', arg.msg
+    print "Error: %s" % e
 
 class TooManyRequestsError(CustomError):
    """Raised when HTTP status code is 429 Too many requests"""
-   if status == '429':
-       waitretry()
-       # add re-run deploy since template deployment are incremental
-   pass
+    waitretry()
+    reDeploy()
 
 class OtherError(CustomError):
    """Raised when ..."""
-   if status == '200':
       print("test only")
-   pass
 
 # main program to test
 

@@ -7,17 +7,18 @@ import requests
 import azAuth
 import json
 
-# create monitoring client
+
 # Replace this with your subscription id
 subscription_id = '09d29343-ed9a-4ad8-baa3-25e147d2d48a'
 resource_group_name = 'myResourceGroup'
 vm_name = 'MyUbuntuVM'
 
-# not all VM works, need to check why
+# not all VM works, need to check why - MH
 # subscription_id = raw_input('Enter subscription ID: ')
 # resource_group_name = raw_input('Enter resource group name: ')
 # vm_name = raw_input('Enter VM name: ')
 
+# create monitoring client
 client = MonitorClient(
     azAuth.getCredentials(),
     subscription_id
@@ -29,13 +30,20 @@ client = MonitorClient(
 #     subscription_id# )
 # resource_client.providers.register('Microsoft.Insights')
 
-# get today's activity log
 
 def main():
-    getTodayActivityLogs()
-    getVMMericsDefinition()
-    getCPUTotal()
+    resource_id = (
+        "subscriptions/{}/"
+        "resourceGroups/{}/"
+        "providers/Microsoft.Compute/virtualMachines/{}"
+    ).format(subscription_id, resource_group_name, vm_name)
 
+   # getTodayActivityLogs()
+    getVMMericsDefinition(resource_id)
+    getCPUTotal(resource_id)
+
+
+# get today's activity log
 def getTodayActivityLogs():
     today = datetime.datetime.now().date()
     filter = " and ".join([
@@ -62,13 +70,7 @@ def getTodayActivityLogs():
 # Get the ARM id of your resource. You might chose to do a "get"
 # using the according management or to build the URL directly
 # Example for a ARM VM
-def getVMMericsDefinition():
-    resource_id = (
-        "subscriptions/{}/"
-        "resourceGroups/{}/"
-        "providers/Microsoft.Compute/virtualMachines/{}"
-    ).format(subscription_id, resource_group_name, vm_name)
-
+def getVMMericsDefinition(resource_id):
 # You can get the available metrics of this specific resource
     for metric in client.metric_definitions.list(resource_id):
         # azure.monitor.models.MetricDefinition
@@ -80,7 +82,7 @@ def getVMMericsDefinition():
         ))
 
 # Get CPU total of yesterday for this VM, by hour
-def getCPUTotal():
+def getCPUTotal(resource_id):
     today = datetime.datetime.now().date()
     yesterday = today - datetime.timedelta(days=1)
 
