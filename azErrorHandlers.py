@@ -28,7 +28,7 @@ status = results.status_code
 remainReads = results.headers["x-ms-ratelimit-remaining-subscription-reads"]
 #remainWrites = results.headers["x-ms-ratelimit-remaining-subscription-writes"]
 
-print("Status:" + status, "RemainingReads:" + remainReads)
+print("Status:" + str(status), "RemainingReads:" + str(remainReads))
 
 # json_output = results.json()
 #
@@ -44,28 +44,29 @@ def waitretry():
         time.sleep(waitime)
 
 # add re-run deploy since template deployment are incremental
-def reDeploy():
+#def reDeploy():
     # re-deploy template
 
 # define user-defined exceptions
 class CustomError(Exception):
-   """Base class for other exceptions"""
+    """Base class for other exceptions"""
+    # def __init__(self, arg):
+    #     # Set some exception infomation
+    #     self.msg = arg
 
 try:
     # Raise an exception with argument
     raise CustomError('This is a CustomError')
+
 except CustomError as e:
     # Catch the custom exception
-    print "Error: %s" % e
+    print("Error: %s" % e)
 
 class TooManyRequestsError(CustomError):
    """Raised when HTTP status code is 429 Too many requests"""
-    waitretry()
-    reDeploy()
 
 class OtherError(CustomError):
    """Raised when ..."""
-      print("test only")
 
 # main program to test
 
@@ -77,9 +78,11 @@ while True:
        else:
            raise OtherError(status)
        break
-   except TooManyRequestsError:
+   except TooManyRequestsError as e:
        print("Wait for " + waittime() + " then try again!")
-   except OtherError:
+       waitretry()
+       reDeploy()
+   except OtherError as e:
        print("This is test only, will add other errors to be handled !")
    time.sleep(5*60)  # wait 5 minutes
 
