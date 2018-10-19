@@ -54,7 +54,7 @@
     }
   },
   "variables": {
-    "repoUrl": "https://github.com/iamrobdavies/KeyVaultFunction.git",
+    "repoUrl": "git@github.com:myrah/akvfunction.git",
     "branch": "master",
     "hostingPlanName": "[parameters('functionAppName')]",
     "storageAccountName": "[substring(toLower(concat(concat(uniqueString(resourceGroup().id)),parameters('functionAppName'),'diagstorageaccount')),0,23)]",
