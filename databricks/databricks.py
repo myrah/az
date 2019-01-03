@@ -126,6 +126,11 @@ class Databricks():
         self.refresh_token = token_response["refreshToken"]
         return self.access_token
 
+    def list_workspace(self):
+        r = self.session.get(self.api_url + 'workspace/list')
+        return r.json()
+
+
     def list_clusters(self):
         r = self.session.get(self.api_url + 'clusters/list')
         return r.json()
@@ -135,6 +140,8 @@ class Databricks():
         return r.json()
 
 
-d = Databricks(org_id=Config.ORG_ID)
+#d = Databricks(org_id=Config.ORG_ID)
+d = Databricks()
+print(f"Workspace: {d.list_workspace()}")
 print(f"Clusters: {d.list_clusters()}")
 print(f"Jobs: {d.list_jobs()}")
