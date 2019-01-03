@@ -18,11 +18,11 @@ class Config():
     # Databricks config
     BASE_URL = 'https://eastus2.azuredatabricks.net'
     API_URL = '{BASE_URL}/api/2.0/'
-    # To initialize workspace
+    # To initialize/launch workspace
     SUBSCRIPTION = "<sub ID>"
     RESOURCE_GROUP = "<RG_name>"
     WORKSPACE = "<workspace_name>"
-    # if workspace exists
+    # if workspace already launched with know org id
     ORG_ID = "<org id>"
 
 class Databricks():
