@@ -17,7 +17,7 @@ class Config():
     authority_url = LOGIN_URL + TENANT_ID
     # Databricks config
     BASE_URL = 'https://eastus2.azuredatabricks.net'
-    API_URL = '{BASE_URL}/api/2.0/'
+    API_URL = f'{BASE_URL}/api/2.0/'
     # To initialize/launch workspace
     SUBSCRIPTION = "<sub ID>"
     RESOURCE_GROUP = "<RG_name>"
